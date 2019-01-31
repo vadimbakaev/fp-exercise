@@ -282,9 +282,9 @@ find f (x :. xs) = if f x then Full x
 lengthGT4 ::
   List a
   -> Bool
-lengthGT4 = lengthGT 4
+lengthGT4 = lengthGT 5
     where
-        lengthGT 0 _         = True
+        lengthGT 0 Nil       = True
         lengthGT _ Nil       = False
         lengthGT n (_ :. xs) = lengthGT (n - 1) xs
 
