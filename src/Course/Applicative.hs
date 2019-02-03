@@ -151,7 +151,7 @@ lift2 ::
   -> f a
   -> f b
   -> f c
-lift2 f fa fb = pure f <*> fa <*> fb
+lift2 g fa fb = f <$> fa <*> fb
 
 -- | Apply a ternary function in the environment.
 -- /can be written using `lift2` and `(<*>)`./
