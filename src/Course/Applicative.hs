@@ -266,8 +266,7 @@ lift1 f fa = lift0 f <*> fa
   f a
   -> f b
   -> f b
-(*>) =
-  error "todo: Course.Applicative#(*>)"
+gs *> xs = const id <$> gs <*> xs
 
 -- | Apply, discarding the value of the second argument.
 -- Pronounced, left apply.
