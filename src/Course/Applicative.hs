@@ -291,8 +291,7 @@ gs *> xs = const id <$> gs <*> xs
   f b
   -> f a
   -> f b
-(<*) =
-  error "todo: Course.Applicative#(<*)"
+gs <* xs = const <$> gs <*> xs
 
 -- | Sequences a list of structures to a structure of list.
 --
