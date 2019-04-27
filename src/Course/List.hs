@@ -284,7 +284,7 @@ lengthGT4 ::
   -> Bool
 lengthGT4 = lengthGT 5
     where
-        lengthGT 0 Nil       = True
+        lengthGT 0 _         = True
         lengthGT _ Nil       = False
         lengthGT n (_ :. xs) = lengthGT (n - 1) xs
 
