@@ -365,8 +365,7 @@ filtering ::
   (a -> f Bool)
   -> List a
   -> f (List a)
-filtering =
-  error "todo: Course.Applicative#filtering"
+filtering f xs = (flatMap id) <$> sequence (map (\x -> (\b -> if b then x :. Nil else Nil) <$> f x) xs)
 
 -----------------------
 -- SUPPORT LIBRARIES --
