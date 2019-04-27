@@ -157,8 +157,7 @@ infixl 1 >>=
   -> (a -> f b)
   -> a
   -> f c
-(<=<) =
-  error "todo: Course.Monad#(<=<)"
+(<=<) f g a = f =<< g a
 
 infixr 1 <=<
 
