@@ -70,8 +70,7 @@ instance Monad ((->) t) where
     (a -> ((->) t b))
     -> ((->) t a)
     -> ((->) t b)
-  (=<<) =
-    error "todo: Course.Monad (=<<)#instance ((->) t)"
+  (=<<) f g = \x -> f (g x) x
 
 -- | Witness that all things with (=<<) and (<$>) also have (<*>).
 --
