@@ -123,10 +123,7 @@ run fileName = do
 -- /Tip:/ use @getArgs@ and @run@
 main ::
   IO ()
-main = do
-  fileName <- getArgs
-  _ <- sequence $ run <$> fileName
-  pure ()
+main = getArgs >>= void . sequence . (<$>) run
   
 ----
 
