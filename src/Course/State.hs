@@ -38,8 +38,7 @@ exec ::
   State s a
   -> s
   -> s
-exec =
-  error "todo: Course.State#exec"
+exec state s = snd $ runState state s
 
 -- | Run the `State` seeded with `s` and retrieve the resulting value.
 --
