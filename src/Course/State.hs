@@ -75,8 +75,10 @@ instance Functor (State s) where
     (a -> b)
     -> State s a
     -> State s b
-  (<$>) =
-    error "todo: Course.State#(<$>)"
+  (<$>) f state = State (\s -> let (fst, snd) = runState state s
+                               in
+                               (f fst, snd)
+                        )
 
 -- | Implement the `Applicative` instance for `State s`.
 --
