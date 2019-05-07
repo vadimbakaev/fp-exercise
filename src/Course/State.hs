@@ -2,6 +2,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE InstanceSigs #-}
 {-# LANGUAGE RebindableSyntax #-}
+{-# LANGUAGE TupleSections #-}
 
 module Course.State where
 
@@ -64,7 +65,7 @@ get = State (\s -> (s, s))
 put ::
   s
   -> State s ()
-put s = State (\_ -> ((), s))
+put s = State (P.const ((), s))
 
 -- | Implement the `Functor` instance for `State s`.
 --
@@ -95,7 +96,7 @@ instance Applicative (State s) where
   pure ::
     a
     -> State s a
-  pure a = State (\s -> (a, s)) 
+  pure a = State (a,) 
   (<*>) ::
     State s (a -> b)
     -> State s a
