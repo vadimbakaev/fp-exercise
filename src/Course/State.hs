@@ -158,8 +158,11 @@ firstRepeat ::
   Ord a =>
   List a
   -> Optional a
-firstRepeat =
-  error "todo: Course.State#firstRepeat"
+firstRepeat Nil = Empty
+firstRepeat (x:.xs) = if result == Empty then firstRepeat xs else result
+  where result = eval (findM f xs) x
+        f a = State (\s -> (a == s, s))
+
 
 -- | Remove all duplicate elements in a `List`.
 -- /Tip:/ Use `filtering` and `State` with a @Data.Set#Set@.
