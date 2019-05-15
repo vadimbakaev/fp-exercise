@@ -56,7 +56,7 @@ eval state s = fst $ runState state s
 -- (0,0)
 get ::
   State s s
-get = State (\s -> (s, s))
+get = State $ \st -> (st, st)
 
 -- | A `State` where the resulting state is seeded with the given value.
 --
@@ -65,7 +65,7 @@ get = State (\s -> (s, s))
 put ::
   s
   -> State s ()
-put s = State (P.const ((), s))
+put s = State $ P.const ((), s)
 
 -- | Implement the `Functor` instance for `State s`.
 --
@@ -76,9 +76,9 @@ instance Functor (State s) where
     (a -> b)
     -> State s a
     -> State s b
-  (<$>) f state = State (\s -> let (fst, snd) = runState state s
-                               in
-                               (f fst, snd)
+  (<$>) f state = State (\st -> let (a, st') = runState state st
+                                in
+                                (f a, st')
                         )
 
 -- | Implement the `Applicative` instance for `State s`.
@@ -118,10 +118,10 @@ instance Monad (State s) where
     (a -> State s b)
     -> State s a
     -> State s b
-  (=<<) m state = State (\s -> let (a, s') = runState state s
-                               in
-                               runState (m a) s'
-                        )
+  k =<< m = State $ \st -> let (a, st') = runState m st
+                           in
+                           runState (k a) st'
+                        
 
 -- | Find the first element in a `List` that satisfies a given predicate.
 -- It is possible that no element is found, hence an `Optional` result.
@@ -158,10 +158,12 @@ firstRepeat ::
   Ord a =>
   List a
   -> Optional a
-firstRepeat Nil = Empty
-firstRepeat (x:.xs) = if result == Empty then firstRepeat xs else result
-  where result = eval (findM f xs) x
-        f a = State (\s -> (a == s, s))
+firstRepeat xs = do
+        set <- eval (findM f (S.singleton <$> xs)) S.empty
+        toOptional $ S.lookupMax set
+  where toOptional (P.Just a) = Full a
+        toOptional _ = Empty
+        f elem = State (\state -> (elem `S.isSubsetOf` state, elem `S.union` state))
 
 
 -- | Remove all duplicate elements in a `List`.
