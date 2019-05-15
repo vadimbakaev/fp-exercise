@@ -159,11 +159,11 @@ firstRepeat ::
   List a
   -> Optional a
 firstRepeat xs = do
-        set <- eval (findM f (S.singleton <$> xs)) S.empty
+        set <- eval (findM k (S.singleton <$> xs)) S.empty
         toOptional $ S.lookupMax set
   where toOptional (P.Just a) = Full a
         toOptional _ = Empty
-        f elem = State (\state -> (elem `S.isSubsetOf` state, elem `S.union` state))
+        k = \e ->  State $ \state -> (e `S.isSubsetOf` state, e `S.union` state)
 
 
 -- | Remove all duplicate elements in a `List`.
